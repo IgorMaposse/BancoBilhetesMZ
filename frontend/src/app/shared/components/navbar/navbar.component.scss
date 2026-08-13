@@ -1,0 +1,78 @@
+.navbar {
+  background: var(--ink);
+  color: white;
+}
+
+.navbar-inner {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+.brand-mark {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.78rem;
+  background: var(--amber);
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 4px 7px;
+  letter-spacing: 0.03em;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+
+  strong { color: var(--amber); font-weight: 700; }
+}
+
+.links {
+  display: flex;
+  gap: 22px;
+  flex: 1;
+  justify-content: center;
+
+  a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.72);
+    padding: 6px 2px;
+    border-bottom: 2px solid transparent;
+
+    &:hover { color: white; }
+    &.active { color: white; border-color: var(--amber); }
+  }
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-chip {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  padding-right: 4px;
+}
+
+.btn-sm { padding: 8px 14px; font-size: 0.85rem; }
+
+.navbar-perforation {
+  height: 3px;
+  background-image: radial-gradient(circle, var(--paper) 2.5px, transparent 2.6px);
+  background-size: 16px 3px;
+  background-repeat: repeat-x;
+  background-position: center;
+}

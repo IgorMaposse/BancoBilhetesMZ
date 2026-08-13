@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="page-header">
+    <span class="eyebrow">Em cartaz</span>
+    <h1>Próximos eventos</h1>
+    <p>Concertos, conferências, espetáculos e eventos desportivos à venda agora.</p>
+  </div>
+
+  @if (loading()) {
+    <p class="hint">A carregar eventos…</p>
+  } @else if (errorMessage()) {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  } @else if (events().length === 0) {
+    <div class="empty-state">
+      <p>Ainda não há eventos publicados. Volta mais tarde.</p>
+    </div>
+  } @else {
+    <div class="event-grid">
+      @for (event of events(); track event.id) {
+        <a class="ticket-card event-card" [routerLink]="['/eventos', event.id]">
+          <div class="event-card-top">
+            <span class="event-category">{{ event.category }}</span>
+            <h3>{{ event.name }}</h3>
+            <p class="event-meta">{{ event.venue }} · {{ event.eventDate | date: 'dd MMM yyyy, HH:mm' }}</p>
+          </div>
+
+          <div class="ticket-perforation"></div>
+
+          <div class="event-card-bottom">
+            <div>
+              <span class="label">Desde</span>
+              <strong class="price">
+                {{ lowestPrice(event) !== null ? (lowestPrice(event) | number: '1.2-2') + ' MZN' : '—' }}
+              </strong>
+            </div>
+            <div class="availability">{{ totalAvailable(event) }} lugares</div>
+          </div>
+        </a>
+      }
+    </div>
+  }
+</div>

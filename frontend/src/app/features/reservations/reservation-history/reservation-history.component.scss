@@ -1,0 +1,154 @@
+.page-header {
+  margin-bottom: 28px;
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber-deep);
+  }
+
+  h1 { font-size: 2.2rem; margin-top: 6px; }
+  p { color: var(--ink-soft); margin-bottom: 0; }
+}
+
+.hint { color: var(--ink-soft); }
+
+.empty-state {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--ink-soft);
+  background: var(--paper-raised);
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+
+  a { color: var(--teal); font-weight: 600; }
+}
+
+.reservation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.reservation-card { padding: 22px 24px; }
+
+.reservation-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+
+  h3 { font-size: 1.2rem; margin-bottom: 4px; }
+}
+
+.reservation-date {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.ticket-perforation { margin: 16px -24px; }
+
+.reservation-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.reservation-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.92rem;
+}
+
+.item-subtotal {
+  font-family: var(--font-mono);
+  color: var(--ink-soft);
+}
+
+.ticket-codes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 10px;
+}
+
+.ticket-code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 7px;
+  color: var(--ink-soft);
+}
+
+.reservation-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+
+  .label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  strong {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+  }
+}
+
+.reservation-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.reservation-edit {
+  margin-bottom: 8px;
+}
+
+.edit-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.edit-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  span {
+    min-width: 20px;
+    text-align: center;
+    font-family: var(--font-mono);
+  }
+
+  .btn {
+    padding: 4px 12px;
+    font-size: 1rem;
+  }
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+}

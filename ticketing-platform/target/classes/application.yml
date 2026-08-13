@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ticketing-platform
+  profiles:
+    active: dev
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:mudar-este-segredo-em-producao-tem-que-ter-256-bits-no-minimo}
+    expiration-minutes: 120
+
+payment-platform:
+  base-url: ${PAYMENT_PLATFORM_URL:http://localhost:8081}
+  client-id: ${PAYMENTS_CLIENT_ID:bancobilhetes-app}
+  client-secret: ${PAYMENTS_CLIENT_SECRET:bancobilhetes-secret}
+
+reservations:
+  expiration-check-interval-ms: 60000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:ticketing;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:postgresql://ticketing-db:5432/ticketing
+    username: ${DB_USER:ticketing}
+    password: ${DB_PASSWORD:ticketing}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+payment-platform:
+  base-url: http://payment-platform:8081

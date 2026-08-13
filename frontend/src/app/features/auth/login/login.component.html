@@ -1,0 +1,33 @@
+<div class="auth-page">
+  <div class="auth-card ticket-card">
+    <div class="auth-card-header">
+      <span class="eyebrow">Acesso</span>
+      <h1>Entrar na tua conta</h1>
+      <p>Consulta eventos, reserva bilhetes e gere as tuas compras.</p>
+    </div>
+
+    <div class="ticket-perforation"></div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+      }
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="tu@exemplo.mz" />
+      </div>
+
+      <div class="field">
+        <label for="password">Palavra-passe</label>
+        <input id="password" type="password" formControlName="password" placeholder="••••••••" />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
+        {{ loading() ? 'A entrar…' : 'Entrar' }}
+      </button>
+    </form>
+
+    <p class="auth-switch">Ainda não tens conta? <a routerLink="/registar">Cria uma agora</a></p>
+  </div>
+</div>

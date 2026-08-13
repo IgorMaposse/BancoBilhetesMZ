@@ -1,0 +1,116 @@
+<div class="container">
+  <div class="page-header">
+    <span class="eyebrow">Histórico</span>
+    <h1>Minhas reservas</h1>
+    <p>Consulta os teus bilhetes e o estado de cada compra.</p>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="hint">A carregar…</p>
+  } @else if (reservations().length === 0) {
+    <div class="empty-state">
+      <p>Ainda não tens reservas. <a routerLink="/eventos">Explora os eventos disponíveis</a>.</p>
+    </div>
+  } @else {
+    <div class="reservation-list">
+      @for (r of reservations(); track r.id) {
+        <div class="ticket-card reservation-card">
+          <div class="reservation-top">
+            <div>
+              <h3>{{ r.eventName }}</h3>
+              <span class="reservation-date">Reservado em {{ r.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+            </div>
+            <span class="status-badge" [class]="statusClass(r.status)">{{ statusLabel(r.status) }}</span>
+          </div>
+
+          <div class="ticket-perforation"></div>
+
+          @if (editingId() === r.id) {
+            <!-- Modo de alteracao: substitui a lista de itens pela mesma UI de seleccao do evento -->
+            <div class="reservation-edit">
+              @if (editLoading()) {
+                <p class="hint">A carregar bilhetes do evento…</p>
+              } @else {
+                @if (editError()) {
+                  <div class="error-banner">{{ editError() }}</div>
+                }
+                <div class="edit-lines">
+                  @for (line of editLines(); track line.ticketType.id) {
+                    <div class="edit-line">
+                      <div>
+                        <strong>{{ line.ticketType.name }}</strong>
+                        <span class="hint"> — {{ line.ticketType.price | number: '1.2-2' }} MZN</span>
+                      </div>
+                      <div class="qty-control">
+                        <button type="button" class="btn btn-ghost" (click)="decrementEdit(line)" [disabled]="line.quantity <= 0">−</button>
+                        <span>{{ line.quantity }}</span>
+                        <button type="button" class="btn btn-ghost" (click)="incrementEdit(line)" [disabled]="line.quantity >= editMax(line)">+</button>
+                      </div>
+                    </div>
+                  }
+                </div>
+                <div class="reservation-bottom">
+                  <div>
+                    <span class="label">Novo total</span>
+                    <strong>{{ editTotal() | number: '1.2-2' }} MZN</strong>
+                  </div>
+                  <div class="edit-actions">
+                    <button class="btn btn-ghost" [disabled]="editSaving()" (click)="cancelEdit()">Cancelar</button>
+                    <button class="btn btn-primary" [disabled]="editSaving()" (click)="saveEdit()">
+                      {{ editSaving() ? 'A guardar…' : 'Guardar alterações' }}
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="reservation-items">
+              @for (item of r.items; track item.ticketTypeId) {
+                <div class="reservation-item">
+                  <span>{{ item.quantity }}x {{ item.ticketTypeName }}</span>
+                  <span class="item-subtotal">{{ item.subtotal | number: '1.2-2' }} MZN</span>
+                </div>
+                @if (item.ticketCodes.length) {
+                  <div class="ticket-codes">
+                    @for (code of item.ticketCodes; track code) {
+                      <span class="ticket-code">{{ code }}</span>
+                    }
+                  </div>
+                }
+              }
+            </div>
+
+            <div class="reservation-bottom">
+              <div>
+                <span class="label">Total</span>
+                <strong>{{ r.totalAmount | number: '1.2-2' }} MZN</strong>
+              </div>
+
+              <div class="reservation-actions">
+                @if (canPay(r)) {
+                  <button class="btn btn-primary" [disabled]="actingId() === r.id" (click)="pay(r)">
+                    {{ actingId() === r.id ? 'A pagar…' : 'Pagar agora' }}
+                  </button>
+                }
+                @if (canAlter(r)) {
+                  <button class="btn btn-secondary" [disabled]="actingId() === r.id" (click)="startEdit(r)">
+                    Alterar
+                  </button>
+                }
+                @if (canCancel(r)) {
+                  <button class="btn btn-danger" [disabled]="actingId() === r.id" (click)="cancel(r)">
+                    {{ actingId() === r.id ? 'A cancelar…' : 'Cancelar reserva' }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

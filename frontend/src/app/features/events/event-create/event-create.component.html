@@ -1,0 +1,90 @@
+<div class="container narrow">
+  <div class="page-header">
+    <span class="eyebrow">Organizador</span>
+    <h1>Criar novo evento</h1>
+    <p>Define a informação do evento e os lotes de bilhetes disponíveis para venda.</p>
+  </div>
+
+  <form [formGroup]="form" class="ticket-card form-card">
+    @if (errorMessage()) {
+      <div class="error-banner">{{ errorMessage() }}</div>
+    }
+
+    <div class="field">
+      <label for="name">Nome do evento</label>
+      <input id="name" type="text" formControlName="name" placeholder="Ex.: Festival de Marrabenta" />
+    </div>
+
+    <div class="field">
+      <label for="description">Descrição</label>
+      <textarea id="description" rows="3" formControlName="description" placeholder="Do que se trata o evento"></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="category">Categoria</label>
+        <select id="category" formControlName="category">
+          <option value="concerto">Concerto</option>
+          <option value="conferencia">Conferência</option>
+          <option value="espetaculo">Espetáculo</option>
+          <option value="desporto">Evento desportivo</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="eventDate">Data e hora</label>
+        <input id="eventDate" type="datetime-local" formControlName="eventDate" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="venue">Recinto</label>
+        <input id="venue" type="text" formControlName="venue" placeholder="Ex.: Estádio da Machava" />
+      </div>
+      <div class="field">
+        <label for="address">Endereço</label>
+        <input id="address" type="text" formControlName="address" placeholder="Ex.: Machava, Maputo" />
+      </div>
+    </div>
+
+    <div class="ticket-perforation"></div>
+
+    <h3>Tipos de bilhete</h3>
+
+    <div formArrayName="ticketTypes" class="ticket-type-form-list">
+      @for (group of ticketTypes.controls; track $index) {
+        <div [formGroupName]="$index" class="ticket-type-form-row">
+          <div class="field">
+            <label>Nome</label>
+            <input type="text" formControlName="name" placeholder="Ex.: Geral" />
+          </div>
+          <div class="field">
+            <label>Preço (MZN)</label>
+            <input type="number" step="0.01" formControlName="price" />
+          </div>
+          <div class="field">
+            <label>Quantidade</label>
+            <input type="number" formControlName="quantityTotal" />
+          </div>
+          <button type="button" class="remove-btn" (click)="removeTicketType($index)" [disabled]="ticketTypes.length === 1">
+            Remover
+          </button>
+        </div>
+      }
+    </div>
+
+    <button type="button" class="btn btn-ghost" (click)="addTicketType()">+ Adicionar tipo de bilhete</button>
+
+    <div class="ticket-perforation"></div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-ghost" [disabled]="submitting()" (click)="submit(false)">
+        Guardar como rascunho
+      </button>
+      <button type="button" class="btn btn-amber" [disabled]="submitting()" (click)="submit(true)">
+        {{ submitting() ? 'A publicar…' : 'Criar e publicar' }}
+      </button>
+    </div>
+  </form>
+</div>

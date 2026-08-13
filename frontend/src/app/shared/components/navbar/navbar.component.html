@@ -1,0 +1,31 @@
+<header class="navbar">
+  <div class="navbar-inner container">
+    <a routerLink="/eventos" class="brand">
+      <span class="brand-mark">MB</span>
+      <span class="brand-name">Banco<strong>Bilhetes</strong></span>
+    </a>
+
+    <nav class="links">
+      <a routerLink="/eventos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Eventos</a>
+
+      @if (auth.role() === 'CLIENTE') {
+        <a routerLink="/minhas-reservas" routerLinkActive="active">Minhas reservas</a>
+      }
+
+      @if (auth.role() === 'ORGANIZADOR' || auth.role() === 'ADMIN') {
+        <a routerLink="/eventos/novo" routerLinkActive="active">Criar evento</a>
+      }
+    </nav>
+
+    <div class="account">
+      @if (auth.isAuthenticated()) {
+        <span class="user-chip">{{ auth.currentUser()?.name }}</span>
+        <button class="btn btn-ghost btn-sm" (click)="logout()">Sair</button>
+      } @else {
+        <a routerLink="/login" class="btn btn-ghost btn-sm">Entrar</a>
+        <a routerLink="/registar" class="btn btn-amber btn-sm">Criar conta</a>
+      }
+    </div>
+  </div>
+  <div class="navbar-perforation"></div>
+</header>

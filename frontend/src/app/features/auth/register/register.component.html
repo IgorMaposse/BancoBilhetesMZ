@@ -1,0 +1,50 @@
+<div class="auth-page">
+  <div class="auth-card ticket-card">
+    <div class="auth-card-header">
+      <span class="eyebrow">Nova conta</span>
+      <h1>Cria a tua conta</h1>
+      <p>Regista-te como cliente para comprar bilhetes, ou como organizador para vender.</p>
+    </div>
+
+    <div class="ticket-perforation"></div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+      }
+
+      <div class="field">
+        <label>Sou...</label>
+        <div class="role-select">
+          <button type="button" [class.selected]="selectedRole() === 'CLIENTE'" (click)="chooseRole('CLIENTE')">
+            Cliente
+          </button>
+          <button type="button" [class.selected]="selectedRole() === 'ORGANIZADOR'" (click)="chooseRole('ORGANIZADOR')">
+            Organizador
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="name">Nome</label>
+        <input id="name" type="text" formControlName="name" placeholder="O teu nome" />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="tu@exemplo.mz" />
+      </div>
+
+      <div class="field">
+        <label for="password">Palavra-passe</label>
+        <input id="password" type="password" formControlName="password" placeholder="Mínimo 8 caracteres" />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
+        {{ loading() ? 'A criar conta…' : 'Criar conta' }}
+      </button>
+    </form>
+
+    <p class="auth-switch">Já tens conta? <a routerLink="/login">Entra aqui</a></p>
+  </div>
+</div>

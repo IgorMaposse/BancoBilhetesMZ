@@ -1,0 +1,96 @@
+.page-header {
+  margin-bottom: 28px;
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber-deep);
+  }
+
+  h1 { font-size: 2.2rem; margin-top: 6px; }
+  p { color: var(--ink-soft); margin-bottom: 0; }
+}
+
+.hint { color: var(--ink-soft); }
+
+.empty-state {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--ink-soft);
+  background: var(--paper-raised);
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(16, 24, 38, 0.08), 0 14px 30px rgba(16, 24, 38, 0.1);
+  }
+}
+
+.event-card-top {
+  padding: 20px 20px 24px;
+}
+
+.event-category {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: var(--teal-soft);
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+
+.event-card-top h3 {
+  font-size: 1.35rem;
+  margin: 10px 0 4px;
+}
+
+.event-meta {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 0;
+}
+
+.event-card-bottom {
+  padding: 16px 20px 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  .label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .price {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+  }
+
+  .availability {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+}

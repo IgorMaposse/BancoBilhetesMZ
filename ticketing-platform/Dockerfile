@@ -1,0 +1,17 @@
+# ---- Build ----
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+# Copia primeiro so o pom.xml para tirar partido da cache de camadas do Docker
+COPY pom.xml .
+RUN mvn -B -q dependency:go-offline
+COPY src ./src
+RUN mvn -B -q clean package -DskipTests
+
+# ---- Run ----
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+RUN addgroup -S app && adduser -S app -G app
+COPY --from=build /app/target/*.jar app.jar
+USER app
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

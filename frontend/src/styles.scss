@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+  --ink: #101826;
+  --ink-soft: #3a4658;
+  --paper: #eef1f6;
+  --paper-raised: #ffffff;
+  --amber: #e8a93b;
+  --amber-deep: #b8791f;
+  --teal: #1b5e52;
+  --teal-soft: #e4f0ed;
+  --red: #c4483a;
+  --red-soft: #fbe9e6;
+  --border: #d6dbe4;
+
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(16, 24, 38, 0.06), 0 8px 24px rgba(16, 24, 38, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.4em;
+  color: var(--ink);
+}
+
+p { margin: 0 0 1em; line-height: 1.55; }
+
+a { color: inherit; text-decoration: none; }
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 11px 20px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease;
+
+  &:active { transform: translateY(1px); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: white;
+  &:hover:not(:disabled) { background: #1b2740; }
+}
+
+.btn-amber {
+  background: var(--amber);
+  color: var(--ink);
+  &:hover:not(:disabled) { background: var(--amber-deep); color: white; }
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--ink);
+  &:hover:not(:disabled) { border-color: var(--ink); }
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: var(--teal);
+  color: var(--teal);
+  &:hover:not(:disabled) { background: var(--teal); color: white; }
+}
+
+.btn-danger {
+  background: var(--red-soft);
+  color: var(--red);
+  &:hover:not(:disabled) { background: var(--red); color: white; }
+}
+
+.btn-block { width: 100%; }
+
+/* ---------- Formulários ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+
+  label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+
+  input, select, textarea {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--paper-raised);
+    color: var(--ink);
+
+    &:focus {
+      outline: none;
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px rgba(16, 24, 38, 0.08);
+    }
+  }
+}
+
+.error-banner {
+  background: var(--red-soft);
+  color: var(--red);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.success-banner {
+  background: var(--teal-soft);
+  color: var(--teal);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* ---------- Badge de estado ---------- */
+.status-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.status-published, .status-confirmed { background: var(--teal-soft); color: var(--teal); }
+.status-draft, .status-pending { background: #f4ecd8; color: var(--amber-deep); }
+.status-cancelled, .status-failed, .status-expired { background: var(--red-soft); color: var(--red); }
+
+/* ---------- Cartão de bilhete (elemento assinatura) ---------- */
+.ticket-card {
+  position: relative;
+  background: var(--paper-raised);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.ticket-perforation {
+  position: relative;
+  border-top: 2px dashed var(--border);
+  margin: 0;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    background: var(--paper);
+    border-radius: 50%;
+  }
+  &::before { left: -10px; }
+  &::after { right: -10px; }
+}

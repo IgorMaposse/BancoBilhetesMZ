@@ -1,0 +1,107 @@
+# docker-compose.yml (raiz do monorepo BancoBilhetes)
+#
+# Pressupõe a seguinte estrutura de pastas, uma por repositório/módulo,
+# lado a lado com este ficheiro:
+#
+#   .
+#   ├── docker-compose.yml   (este ficheiro)
+#   ├── ticketing-platform/  (pom.xml, Dockerfile, src/...)
+#   ├── payment-platform/    (pom.xml, Dockerfile, src/...)
+#   └── frontend/            (package.json, Dockerfile, nginx.conf, src/...)
+#
+# Uso:
+#   docker compose up --build
+#
+# Serviços expostos no host:
+#   - Frontend (Angular servido por Nginx): http://localhost:4200
+#   - ticketing-platform (Swagger UI):      http://localhost:8080/swagger-ui.html
+#   - payment-platform (Swagger UI):        http://localhost:8081/swagger-ui.html
+#
+# Todos os serviços correm com o perfil Spring "docker" (Postgres em vez de H2 em memória).
+
+services:
+
+  ticketing-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ticketing
+      POSTGRES_USER: ticketing
+      POSTGRES_PASSWORD: ticketing
+    volumes:
+      - ticketing-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ticketing -d ticketing"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  payment-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: payments
+      POSTGRES_USER: payments
+      POSTGRES_PASSWORD: payments
+    volumes:
+      - payment-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payments -d payments"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  payment-platform:
+    build:
+      context: ./payment-platform
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_USER: payments
+      DB_PASSWORD: payments
+      PAYMENTS_CLIENT_ID: bancobilhetes-app
+      PAYMENTS_CLIENT_SECRET: bancobilhetes-secret
+    depends_on:
+      payment-db:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  ticketing-platform:
+    build:
+      context: ./ticketing-platform
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_USER: ticketing
+      DB_PASSWORD: ticketing
+      JWT_SECRET: mudar-este-segredo-em-producao-tem-que-ter-256-bits-no-minimo
+      PAYMENTS_CLIENT_ID: bancobilhetes-app
+      PAYMENTS_CLIENT_SECRET: bancobilhetes-secret
+    depends_on:
+      ticketing-db:
+        condition: service_healthy
+      payment-platform:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - ticketing-platform
+    ports:
+      - "4200:80"
+
+volumes:
+  ticketing-db-data:
+  payment-db-data:

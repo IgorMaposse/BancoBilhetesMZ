@@ -1,0 +1,83 @@
+<div class="container">
+  @if (loading()) {
+    <p class="hint">A carregar evento…</p>
+  } @else if (!event()) {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  } @else {
+    <a routerLink="/eventos" class="back-link">&larr; Voltar aos eventos</a>
+
+    @if (reservationDone()) {
+      <div class="ticket-card confirmation">
+        <div class="confirmation-top">
+          <span class="stamp">Confirmado</span>
+          <h2>Reserva paga com sucesso!</h2>
+          <p>Os teus bilhetes já estão disponíveis em "Minhas reservas", com o respetivo código de cada bilhete.</p>
+        </div>
+        <div class="ticket-perforation"></div>
+        <div class="confirmation-bottom">
+          <button class="btn btn-primary" (click)="goToHistory()">Ver minhas reservas</button>
+        </div>
+      </div>
+    } @else {
+      <div class="event-layout">
+        <div class="event-info">
+          <span class="event-category">{{ event()!.category }}</span>
+          <h1>{{ event()!.name }}</h1>
+          <p class="event-meta">
+            {{ event()!.venue }}, {{ event()!.address }}<br />
+            {{ event()!.eventDate | date: 'EEEE, dd MMMM yyyy · HH:mm' }}
+          </p>
+          <p class="event-description">{{ event()!.description }}</p>
+        </div>
+
+        <div class="ticket-card booking-panel">
+          <div class="booking-header">
+            <h3>Escolher bilhetes</h3>
+          </div>
+
+          <div class="ticket-perforation"></div>
+
+          @if (errorMessage()) {
+            <div class="error-banner">{{ errorMessage() }}</div>
+          }
+
+          <div class="ticket-type-list">
+            @for (t of event()!.ticketTypes; track t.id) {
+              <div class="ticket-type-row">
+                <div>
+                  <strong>{{ t.name }}</strong>
+                  <span class="ticket-type-price">{{ t.price | number: '1.2-2' }} MZN</span>
+                  <span class="ticket-type-availability">{{ t.quantityAvailable }} disponíveis</span>
+                </div>
+                <div class="quantity-stepper">
+                  <button type="button" (click)="decrement(t)" [disabled]="!cart()[t.id]">−</button>
+                  <span>{{ cart()[t.id] ?? 0 }}</span>
+                  <button type="button" (click)="increment(t)" [disabled]="(cart()[t.id] ?? 0) >= t.quantityAvailable">+</button>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="ticket-perforation"></div>
+
+          <div class="booking-summary">
+            <span>Total</span>
+            <strong>{{ cartTotal() | number: '1.2-2' }} MZN</strong>
+          </div>
+
+          <button
+            class="btn btn-amber btn-block"
+            [disabled]="cartLines().length === 0 || submitting()"
+            (click)="reserveAndPay()"
+          >
+            {{ submitting() ? 'A processar pagamento…' : 'Reservar e pagar' }}
+          </button>
+
+          @if (!auth.isAuthenticated()) {
+            <p class="login-hint">Precisas de <a routerLink="/login">entrar</a> para reservar.</p>
+          }
+        </div>
+      </div>
+    }
+  }
+</div>
