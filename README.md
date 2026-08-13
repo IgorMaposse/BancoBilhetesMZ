@@ -1,6 +1,6 @@
 Como correr tudo localmente?
 
-Ver `docker-compose.yml` na raiz. Resumo:
+Ver `docker-compose.yml` na raiz. 
 
 ```bash
 docker compose up --build
